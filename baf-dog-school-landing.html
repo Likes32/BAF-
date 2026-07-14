@@ -1261,11 +1261,15 @@
         reviewsLoopWidth = reviewsTrack.scrollWidth / 2;
       })();
 
+      var reviewsWrapTimer;
       reviewsSlider.addEventListener('scroll', function () {
         if (!reviewsLoopWidth) return;
-        if (reviewsSlider.scrollLeft >= reviewsLoopWidth) {
-          reviewsSlider.scrollLeft -= reviewsLoopWidth;
-        }
+        clearTimeout(reviewsWrapTimer);
+        reviewsWrapTimer = setTimeout(function () {
+          if (reviewsSlider.scrollLeft >= reviewsLoopWidth) {
+            reviewsSlider.scrollLeft -= reviewsLoopWidth;
+          }
+        }, 150);
       }, { passive: true });
 
       reviewsSlider.addEventListener('wheel', function (e) {
