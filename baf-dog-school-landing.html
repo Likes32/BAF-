@@ -1247,6 +1247,24 @@
       var reviewsTrack = reviewsSlider.querySelector('[data-reviews-track]');
       var reviewsAutoTimer;
       var reviewsPaused = false;
+      var reviewsLoopWidth = 0;
+
+      (function setupReviewsLoop() {
+        var originals = Array.prototype.slice.call(reviewsTrack.querySelectorAll('.review-card'));
+        originals.forEach(function (card) {
+          var clone = card.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          reviewsTrack.appendChild(clone);
+        });
+        reviewsLoopWidth = reviewsTrack.scrollWidth / 2;
+      })();
+
+      reviewsSlider.addEventListener('scroll', function () {
+        if (!reviewsLoopWidth) return;
+        if (reviewsSlider.scrollLeft >= reviewsLoopWidth) {
+          reviewsSlider.scrollLeft -= reviewsLoopWidth;
+        }
+      }, { passive: true });
 
       reviewsSlider.addEventListener('wheel', function (e) {
         if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
@@ -1276,14 +1294,9 @@
 
       function reviewsAutoStep() {
         if (reviewsPaused || reduce) return;
-        var atEnd = reviewsSlider.scrollLeft + reviewsSlider.clientWidth >= reviewsTrack.scrollWidth - 4;
-        if (atEnd) {
-          reviewsSlider.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          var card = reviewsTrack.querySelector('.review-card');
-          var step = card ? card.getBoundingClientRect().width + 1 : 320;
-          reviewsSlider.scrollBy({ left: step, behavior: 'smooth' });
-        }
+        var card = reviewsTrack.querySelector('.review-card');
+        var step = card ? card.getBoundingClientRect().width + 1 : 320;
+        reviewsSlider.scrollBy({ left: step, behavior: 'smooth' });
       }
       if (!reduce) {
         reviewsAutoTimer = setInterval(reviewsAutoStep, 3800);
