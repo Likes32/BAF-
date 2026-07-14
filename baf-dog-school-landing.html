@@ -539,14 +539,14 @@
   .video-caption::before { content: ''; width: 22px; height: 2px; background: var(--red); display: inline-block; }
 
   /* ---------- staggered card reveals ---------- */
-  .pillars.reveal, .service-grid.reveal, .price-grid.reveal, .people-grid.reveal, .reviews-slider.reveal {
+  .pillars.reveal, .service-grid.reveal, .price-grid.reveal, .people-grid.reveal, .reviews-grid.reveal {
     opacity: 1; transform: none;
   }
   .pillars.reveal .pillar,
   .service-grid.reveal .service-card,
   .price-grid.reveal .price-card,
   .people-grid.reveal .person,
-  .reviews-slider.reveal .review-card {
+  .reviews-grid.reveal .review-card {
     opacity: 0;
     transform: translateY(18px);
     transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -555,17 +555,15 @@
   .service-grid.reveal.in .service-card,
   .price-grid.reveal.in .price-card,
   .people-grid.reveal.in .person,
-  .reviews-slider.reveal.in .review-card {
+  .reviews-grid.reveal.in .review-card {
     opacity: 1; transform: none;
   }
-  .pillars.reveal .pillar:nth-child(1), .service-grid.reveal .service-card:nth-child(1), .price-grid.reveal .price-card:nth-child(1), .people-grid.reveal .person:nth-child(1), .reviews-slider.reveal .review-card:nth-child(1) { transition-delay: 0.05s; }
-  .pillars.reveal .pillar:nth-child(2), .service-grid.reveal .service-card:nth-child(2), .price-grid.reveal .price-card:nth-child(2), .people-grid.reveal .person:nth-child(2), .reviews-slider.reveal .review-card:nth-child(2) { transition-delay: 0.14s; }
-  .pillars.reveal .pillar:nth-child(3), .service-grid.reveal .service-card:nth-child(3), .price-grid.reveal .price-card:nth-child(3), .reviews-slider.reveal .review-card:nth-child(3) { transition-delay: 0.23s; }
-  .service-grid.reveal .service-card:nth-child(4), .price-grid.reveal .price-card:nth-child(4), .reviews-slider.reveal .review-card:nth-child(4) { transition-delay: 0.32s; }
-  .reviews-slider.reveal .review-card:nth-child(5) { transition-delay: 0.41s; }
-  .reviews-slider.reveal .review-card:nth-child(6) { transition-delay: 0.5s; }
+  .pillars.reveal .pillar:nth-child(1), .service-grid.reveal .service-card:nth-child(1), .price-grid.reveal .price-card:nth-child(1), .people-grid.reveal .person:nth-child(1), .reviews-grid.reveal .review-card:nth-child(1) { transition-delay: 0.05s; }
+  .pillars.reveal .pillar:nth-child(2), .service-grid.reveal .service-card:nth-child(2), .price-grid.reveal .price-card:nth-child(2), .people-grid.reveal .person:nth-child(2), .reviews-grid.reveal .review-card:nth-child(2) { transition-delay: 0.14s; }
+  .pillars.reveal .pillar:nth-child(3), .service-grid.reveal .service-card:nth-child(3), .price-grid.reveal .price-card:nth-child(3), .reviews-grid.reveal .review-card:nth-child(3) { transition-delay: 0.23s; }
+  .service-grid.reveal .service-card:nth-child(4), .price-grid.reveal .price-card:nth-child(4), .reviews-grid.reveal .review-card:nth-child(4) { transition-delay: 0.32s; }
   @media (prefers-reduced-motion: reduce) {
-    .pillars.reveal .pillar, .service-grid.reveal .service-card, .price-grid.reveal .price-card, .people-grid.reveal .person, .reviews-slider.reveal .review-card {
+    .pillars.reveal .pillar, .service-grid.reveal .service-card, .price-grid.reveal .price-card, .people-grid.reveal .person, .reviews-grid.reveal .review-card {
       opacity: 1; transform: none; transition: none;
     }
   }
@@ -649,25 +647,18 @@
   @media (max-width: 640px) { .people-grid { grid-template-columns: 1fr; } }
 
   /* ---------- reviews ---------- */
-  .reviews-slider {
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
   }
-  .reviews-slider::-webkit-scrollbar { display: none; }
-  .reviews-track { display: flex; align-items: flex-start; gap: 1px; background: var(--line); border: 1px solid var(--line); width: max-content; }
   .review-card {
-    scroll-snap-align: start;
-    flex: 0 0 min(360px, 84vw);
-    min-height: 260px;
     background: var(--bg);
     padding: clamp(1.5rem, 3vw, 2rem);
     display: flex; flex-direction: column; gap: 1rem;
     transition: box-shadow 0.4s ease, background 0.4s ease;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
   }
   .review-card:hover { box-shadow: inset 0 0 0 1px var(--red), inset 0 2px 0 0 var(--red); background: color-mix(in srgb, var(--bg) 92%, var(--red) 8%); }
   .review-head { display: flex; align-items: center; justify-content: space-between; }
@@ -681,6 +672,7 @@
   .review-foot { display: flex; flex-direction: column; gap: 0.4rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
   .review-name { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; font-size: 1rem; }
   .review-tag { font-size: var(--step-caption); color: var(--red-bright); text-transform: uppercase; letter-spacing: 0.08em; }
+  @media (max-width: 700px) { .reviews-grid { grid-template-columns: 1fr; } }
 
   /* ---------- contact ---------- */
   .cta-menu-wrap { position: relative; display: inline-block; }
@@ -963,82 +955,54 @@
         <h2>5,0 из 5 — 51 отзыв на Авито</h2>
         <p class="lede">Реальные отзывы клиентов школы БАФ. Полная лента отзывов — на странице школы на Авито.</p>
       </div>
-      <div class="reviews-slider" data-reviews>
-        <div class="reviews-track" data-reviews-track>
+      <div class="reviews-grid reveal">
+        <article class="review-card">
+          <div class="review-head">
+            <div class="review-stars" aria-label="5 из 5">★★★★★</div>
+            <span class="review-source">Авито</span>
+          </div>
+          <p class="review-text">Кинолог очень здорово нас выручил с дрессировкой и передержкой одновременно. Привёл состояние собаки в надлежащее поведение, снял агрессию и возбуждение в общении с людьми и собаками. Большая благодарность за хорошо выполненную работу и адекватную сумму.</p>
+          <div class="review-foot">
+            <span class="review-name">Николай</span>
+            <span class="review-tag">Передержка с дрессировкой</span>
+          </div>
+        </article>
 
-          <article class="review-card">
-            <div class="review-head">
-              <div class="review-stars" aria-label="5 из 5">★★★★★</div>
-              <span class="review-source">Авито</span>
-            </div>
-            <p class="review-text">Кинолог очень здорово нас выручил с дрессировкой и передержкой одновременно. Привёл состояние собаки в надлежащее поведение, снял агрессию и возбуждение в общении с людьми и собаками. Большая благодарность за хорошо выполненную работу и адекватную сумму.</p>
-            <div class="review-foot">
-              <span class="review-name">Николай</span>
-              <span class="review-tag">Передержка с дрессировкой</span>
-            </div>
-          </article>
+        <article class="review-card">
+          <div class="review-head">
+            <div class="review-stars" aria-label="5 из 5">★★★★★</div>
+            <span class="review-source">Авито</span>
+          </div>
+          <p class="review-text">Обратился к Дарине за помощью в дрессировке, что могу сказать, профессионал с огромным опытом, рассказала очень много нюансов, решили готовить мелкого к сдаче экзаменов в РКФ.</p>
+          <div class="review-foot">
+            <span class="review-name">Андрей</span>
+            <span class="review-tag">Дрессировка офлайн</span>
+          </div>
+        </article>
 
-          <article class="review-card">
-            <div class="review-head">
-              <div class="review-stars" aria-label="5 из 5">★★★★★</div>
-              <span class="review-source">Авито</span>
-            </div>
-            <p class="review-text">Очень довольна работой Дарины! Запрос был по усмирению эмоций пёселя 10 лет при подготовке и выходе на прогулку и в целом сделать его спокойнее. После первого же занятия смогла спокойно без психов и оров выходить с собакой гулять! И далее также уже стала применять метод, показанный мне, и заметно, что пёс стал спокойнее! Спасибо большое, будем и…</p>
-            <div class="review-foot">
-              <span class="review-name">Екатерина</span>
-              <span class="review-tag">Дрессировка с выездом кинолога</span>
-            </div>
-          </article>
+        <article class="review-card">
+          <div class="review-head">
+            <div class="review-stars" aria-label="5 из 5">★★★★★</div>
+            <span class="review-source">Авито</span>
+          </div>
+          <p class="review-text">Оставляла у Дарины свою «особенную» собачку на время отъезда. Собачка осталась довольна, я тоже) Спасибо</p>
+          <div class="review-foot">
+            <span class="review-name">Елена</span>
+            <span class="review-tag">Передержка без дрессировки</span>
+          </div>
+        </article>
 
-          <article class="review-card">
-            <div class="review-head">
-              <div class="review-stars" aria-label="5 из 5">★★★★★</div>
-              <span class="review-source">Авито</span>
-            </div>
-            <p class="review-text">Обратился к Дарине за помощью в дрессировке, что могу сказать, профессионал с огромным опытом, рассказала очень много нюансов, решили готовить мелкого к сдаче экзаменов в РКФ.</p>
-            <div class="review-foot">
-              <span class="review-name">Андрей</span>
-              <span class="review-tag">Кинолог с выездом</span>
-            </div>
-          </article>
-
-          <article class="review-card">
-            <div class="review-head">
-              <div class="review-stars" aria-label="5 из 5">★★★★★</div>
-              <span class="review-source">Авито</span>
-            </div>
-            <p class="review-text">Оставляла у Дарины свою «особенную» собачку на время отъезда. Собачка осталась довольна, я тоже) Спасибо</p>
-            <div class="review-foot">
-              <span class="review-name">Елена</span>
-              <span class="review-tag">Домашняя передержка</span>
-            </div>
-          </article>
-
-          <article class="review-card">
-            <div class="review-head">
-              <div class="review-stars" aria-label="5 из 5">★★★★★</div>
-              <span class="review-source">Авито</span>
-            </div>
-            <p class="review-text">Мы обращались за помощью в адаптации щенка из приюта к жизни в большом и шумном городе. Изначально она была пугливой, недоверчиво относилась к незнакомым людям, реагировала на большие машины и других собак. Уже на первом занятии Дарина обозначила ключевые моменты, над которыми нужно было работать…</p>
-            <div class="review-foot">
-              <span class="review-name">Анастасия</span>
-              <span class="review-tag">Дрессировка / передержка</span>
-            </div>
-          </article>
-
-          <article class="review-card">
-            <div class="review-head">
-              <div class="review-stars" aria-label="5 из 5">★★★★★</div>
-              <span class="review-source">Авито</span>
-            </div>
-            <p class="review-text">Хороший кинолог. Всё объяснила, по любым вопросам на связи. Рекомендую.</p>
-            <div class="review-foot">
-              <span class="review-name">Ирина</span>
-              <span class="review-tag">Дрессировка с выездом кинолога</span>
-            </div>
-          </article>
-
-        </div>
+        <article class="review-card">
+          <div class="review-head">
+            <div class="review-stars" aria-label="5 из 5">★★★★★</div>
+            <span class="review-source">Авито</span>
+          </div>
+          <p class="review-text">Мы обращались за помощью в адаптации щенка из приюта к жизни в большом и шумном городе. Изначально она была пугливой, недоверчиво относилась к незнакомым людям, реагировала на большие машины и других собак. Уже на первом занятии Дарина обозначила ключевые моменты, над которыми нужно было работать…</p>
+          <div class="review-foot">
+            <span class="review-name">Анастасия</span>
+            <span class="review-tag">Дрессировка / передержка</span>
+          </div>
+        </article>
       </div>
       <a class="link-line" href="https://www.avito.ru/brands/baf_dress/all?sellerId=053a7ebed8b447e28f68d2ef7bf777bb" target="_blank" rel="noopener" style="margin-top: 1.8rem;">Все 51 отзыв на Авито</a>
     </div>
@@ -1247,45 +1211,6 @@
       document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
     }
 
-    var reviewsSlider = document.querySelector('[data-reviews]');
-    if (reviewsSlider) {
-      var reviewsTrack = reviewsSlider.querySelector('[data-reviews-track]');
-      var reviewsAutoTimer;
-      var reviewsPaused = false;
-
-      reviewsSlider.addEventListener('wheel', function (e) {
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          reviewsSlider.scrollLeft += e.deltaY;
-          e.preventDefault();
-        }
-      }, { passive: false });
-
-      function reviewsAutoStep() {
-        if (reviewsPaused || reduce) return;
-        var atEnd = reviewsSlider.scrollLeft + reviewsSlider.clientWidth >= reviewsTrack.scrollWidth - 4;
-        if (atEnd) {
-          reviewsSlider.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          var card = reviewsTrack.querySelector('.review-card');
-          var step = card ? card.getBoundingClientRect().width + 1 : 320;
-          reviewsSlider.scrollBy({ left: step, behavior: 'smooth' });
-        }
-      }
-      if (!reduce) {
-        reviewsAutoTimer = setInterval(reviewsAutoStep, 3800);
-        reviewsSlider.addEventListener('mouseenter', function () { reviewsPaused = true; });
-        reviewsSlider.addEventListener('mouseleave', function () { reviewsPaused = false; });
-        var reviewsTouchResume;
-        reviewsSlider.addEventListener('touchstart', function () {
-          reviewsPaused = true;
-          clearTimeout(reviewsTouchResume);
-        }, { passive: true });
-        reviewsSlider.addEventListener('touchend', function () {
-          clearTimeout(reviewsTouchResume);
-          reviewsTouchResume = setTimeout(function () { reviewsPaused = false; }, 4000);
-        }, { passive: true });
-      }
-    }
   })();
 </script>
 </body>
