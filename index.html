@@ -727,6 +727,8 @@
   .footer-col a { position: relative; text-decoration: none; font-size: var(--step-small); color: var(--fg-soft); transition: color 0.2s ease, padding-left 0.25s ease; }
   .footer-col a:hover { color: var(--red-bright); padding-left: 0.4rem; }
   .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-top: clamp(2.5rem, 5vw, 3.5rem); padding-top: 1.4rem; border-top: 1px solid var(--line); color: var(--fg-faint); font-size: var(--step-caption); }
+  .footer-bottom a { color: var(--fg-faint); transition: color 0.2s ease; }
+  .footer-bottom a:hover { color: var(--red-bright); }
   @media (max-width: 780px) { .footer-grid { grid-template-columns: 1fr; } }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1089,6 +1091,7 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Школа дрессировки собак «БАФ». Все права защищены.</span>
+      <a href="privacy.html">Политика конфиденциальности</a>
     </div>
   </div>
 </footer>
