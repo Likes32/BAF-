@@ -429,8 +429,11 @@
   /* ---------- mosaic gallery ---------- */
   .mosaic {
     position: relative;
-    display: flex;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 3px;
+    background: var(--red);
+    border: 1px solid var(--line);
     height: clamp(380px, 42vw, 560px);
     margin-top: clamp(2.8rem, 6vw, 4.5rem);
   }
@@ -439,23 +442,22 @@
     display: block;
     overflow: hidden;
     background: var(--bg-raise);
-    border: 1px solid var(--line);
+    height: 100%;
     text-decoration: none;
-    flex: 0 0 40%;
     cursor: default;
-    box-shadow: 0 18px 34px rgba(8, 7, 7, 0.4);
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+    -webkit-touch-callout: none;
+    user-select: none;
+    transition: box-shadow 0.4s ease;
   }
-  .mosaic-tile:not(:first-child) { margin-left: -7%; }
-  .mosaic-tile:nth-child(1) { height: 100%; z-index: 3; }
-  .mosaic-tile:nth-child(2) { height: 87%; z-index: 2; }
-  .mosaic-tile:nth-child(3) { height: 74%; z-index: 1; }
-  .mosaic-tile:hover { z-index: 4; transform: translateY(-16px) scale(1.03); box-shadow: 0 26px 46px rgba(8, 7, 7, 0.55); }
+  .mosaic-tile:hover { box-shadow: inset 0 3px 0 0 var(--red); z-index: 2; }
   .mosaic-tile img {
     width: 100%; height: 100%; object-fit: cover; display: block;
     filter: grayscale(1) contrast(1.12) brightness(0.85);
     transform: scale(1.02);
     transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+    -webkit-touch-callout: none;
+    user-select: none;
+    pointer-events: none;
   }
   .mosaic-tile:hover img { transform: scale(1.08); filter: grayscale(0.3) contrast(1.1) brightness(0.94); }
   .mosaic-scrim {
@@ -490,9 +492,8 @@
   .mosaic.reveal .mosaic-tile:nth-child(2) { transition-delay: 0.18s; }
   .mosaic.reveal .mosaic-tile:nth-child(3) { transition-delay: 0.31s; }
   @media (max-width: 720px) {
-    .mosaic { flex-direction: column; height: auto; gap: 10px; }
-    .mosaic-tile { flex: 0 0 auto; aspect-ratio: 3 / 4; height: auto; margin-left: 0 !important; box-shadow: none; border: 1px solid var(--line); }
-    .mosaic-tile:hover { transform: none; }
+    .mosaic { grid-template-columns: 1fr; height: auto; gap: 10px; background: transparent; border: none; }
+    .mosaic-tile { aspect-ratio: 3 / 4; height: auto; border: 1px solid var(--line); }
   }
   @media (prefers-reduced-motion: reduce) {
     .mosaic.reveal .mosaic-tile { opacity: 1; transform: none; transition: none; }
@@ -829,19 +830,19 @@
       <div class="mosaic reveal">
         <div class="mosaic-tile">
           <span class="mosaic-index">№ 01</span>
-          <img src="photos/balance-hug.jpg" alt="Баланс — доверие между малинуа и кинологом БАФ" style="object-position: 50% 30%;">
+          <img src="photos/balance-hug.jpg" alt="Баланс — доверие между малинуа и кинологом БАФ" style="object-position: 50% 30%;" draggable="false">
           <span class="mosaic-scrim"></span>
           <span class="mosaic-cap"><em>Б</em>Баланс</span>
         </div>
         <div class="mosaic-tile">
           <span class="mosaic-index">№ 02</span>
-          <img src="photos/adequacy-walk.jpg" alt="Адекватность — собака спокойно идёт рядом на поводке">
+          <img src="photos/adequacy-walk.jpg" alt="Адекватность — собака спокойно идёт рядом на поводке" draggable="false">
           <span class="mosaic-scrim"></span>
           <span class="mosaic-cap"><em>А</em>Адекватность</span>
         </div>
         <div class="mosaic-tile">
           <span class="mosaic-index">№ 03</span>
-          <img src="photos/functionality-run.jpg" alt="Функциональность — отработка команды в движении с игрушкой" style="object-position: 50% 42%;">
+          <img src="photos/functionality-run.jpg" alt="Функциональность — отработка команды в движении с игрушкой" style="object-position: 50% 42%;" draggable="false">
           <span class="mosaic-scrim"></span>
           <span class="mosaic-cap"><em>Ф</em>Функциональность</span>
         </div>
