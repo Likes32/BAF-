@@ -1132,11 +1132,27 @@
     var toggle = document.getElementById('navToggle');
     var links = document.querySelector('.nav-links');
     if (toggle && links) {
-      toggle.addEventListener('click', function () {
-        var open = links.style.display === 'flex';
-        links.style.display = open ? 'none' : 'flex';
-        links.style.cssText += open ? '' : 'position:absolute;top:100%;left:0;right:0;background:var(--bg);flex-direction:column;align-items:flex-start;padding:1rem 1.25rem 1.5rem;border-bottom:1px solid var(--line);gap:1rem;';
-        toggle.setAttribute('aria-expanded', String(!open));
+      var openNav = function () {
+        links.style.display = 'flex';
+        links.style.cssText += 'position:absolute;top:100%;left:0;right:0;background:var(--bg);flex-direction:column;align-items:flex-start;padding:1rem 1.25rem 1.5rem;border-bottom:1px solid var(--line);gap:1rem;';
+        toggle.setAttribute('aria-expanded', 'true');
+      };
+      var closeNav = function () {
+        links.removeAttribute('style');
+        toggle.setAttribute('aria-expanded', 'false');
+      };
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var isOpen = links.style.display === 'flex';
+        isOpen ? closeNav() : openNav();
+      });
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', closeNav);
+      });
+      document.addEventListener('click', function (e) {
+        if (links.style.display === 'flex' && !links.contains(e.target) && e.target !== toggle) {
+          closeNav();
+        }
       });
     }
 
