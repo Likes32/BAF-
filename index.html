@@ -654,9 +654,7 @@
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    cursor: grab;
   }
-  .reviews-slider.is-dragging { cursor: grabbing; scroll-snap-type: none; }
   .reviews-slider::-webkit-scrollbar { display: none; }
   .reviews-track { display: flex; gap: 1px; background: var(--line); border: 1px solid var(--line); width: max-content; }
   .review-card {
@@ -1275,25 +1273,6 @@
           e.preventDefault();
         }
       }, { passive: false });
-
-      var dragStartX = 0, dragStartScroll = 0, isDown = false;
-      reviewsSlider.addEventListener('pointerdown', function (e) {
-        if (e.pointerType === 'touch') return;
-        isDown = true;
-        reviewsSlider.classList.add('is-dragging');
-        dragStartX = e.clientX;
-        dragStartScroll = reviewsSlider.scrollLeft;
-      });
-      window.addEventListener('pointermove', function (e) {
-        if (!isDown) return;
-        reviewsSlider.scrollLeft = dragStartScroll - (e.clientX - dragStartX);
-      });
-      function reviewsStopDrag() {
-        isDown = false;
-        reviewsSlider.classList.remove('is-dragging');
-      }
-      window.addEventListener('pointerup', reviewsStopDrag);
-      window.addEventListener('pointercancel', reviewsStopDrag);
 
       function reviewsAutoStep() {
         if (reviewsPaused || reduce) return;
