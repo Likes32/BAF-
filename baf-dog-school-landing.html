@@ -1282,6 +1282,15 @@
         reviewsAutoTimer = setInterval(reviewsAutoStep, 3800);
         reviewsSlider.addEventListener('mouseenter', function () { reviewsPaused = true; });
         reviewsSlider.addEventListener('mouseleave', function () { reviewsPaused = false; });
+        var reviewsTouchResume;
+        reviewsSlider.addEventListener('touchstart', function () {
+          reviewsPaused = true;
+          clearTimeout(reviewsTouchResume);
+        }, { passive: true });
+        reviewsSlider.addEventListener('touchend', function () {
+          clearTimeout(reviewsTouchResume);
+          reviewsTouchResume = setTimeout(function () { reviewsPaused = false; }, 4000);
+        }, { passive: true });
       }
     }
   })();
