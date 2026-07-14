@@ -429,11 +429,8 @@
   /* ---------- mosaic gallery ---------- */
   .mosaic {
     position: relative;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr 1fr;
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
+    display: flex;
+    align-items: flex-end;
     height: clamp(380px, 42vw, 560px);
     margin-top: clamp(2.8rem, 6vw, 4.5rem);
   }
@@ -442,11 +439,18 @@
     display: block;
     overflow: hidden;
     background: var(--bg-raise);
-    height: 100%;
+    border: 1px solid var(--line);
     text-decoration: none;
-    transition: box-shadow 0.4s ease;
+    flex: 0 0 40%;
+    cursor: default;
+    box-shadow: 0 18px 34px rgba(8, 7, 7, 0.4);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
   }
-  .mosaic-tile:hover { box-shadow: inset 0 3px 0 0 var(--red); z-index: 2; }
+  .mosaic-tile:not(:first-child) { margin-left: -7%; }
+  .mosaic-tile:nth-child(1) { height: 100%; z-index: 3; }
+  .mosaic-tile:nth-child(2) { height: 87%; z-index: 2; }
+  .mosaic-tile:nth-child(3) { height: 74%; z-index: 1; }
+  .mosaic-tile:hover { z-index: 4; transform: translateY(-16px) scale(1.03); box-shadow: 0 26px 46px rgba(8, 7, 7, 0.55); }
   .mosaic-tile img {
     width: 100%; height: 100%; object-fit: cover; display: block;
     filter: grayscale(1) contrast(1.12) brightness(0.85);
@@ -477,37 +481,21 @@
     font-style: normal; color: var(--red-bright);
     font-size: 1.3em;
   }
-  .mosaic-seam {
-    position: absolute; z-index: 3; top: 50%; transform: translate(-50%, -50%);
-    width: 30px; height: 30px; border-radius: 50%;
-    background: var(--bg);
-    border: 1px solid var(--red);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-weight: 700; color: var(--red-bright);
-    font-size: 1.1rem; line-height: 1;
-    pointer-events: none;
-  }
-  .mosaic-seam.s1 { left: 37.5%; }
-  .mosaic-seam.s2 { left: 68.75%; }
-  .mosaic.reveal .mosaic-tile,
-  .mosaic.reveal .mosaic-seam {
+  .mosaic.reveal .mosaic-tile {
     opacity: 0; transform: translateY(18px) scale(1);
     transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .mosaic.reveal .mosaic-seam { transform: translate(-50%, calc(-50% + 18px)); }
   .mosaic.reveal.in .mosaic-tile { opacity: 1; transform: none; }
-  .mosaic.reveal.in .mosaic-seam { opacity: 1; transform: translate(-50%, -50%); }
   .mosaic.reveal .mosaic-tile:nth-child(1) { transition-delay: 0.05s; }
   .mosaic.reveal .mosaic-tile:nth-child(2) { transition-delay: 0.18s; }
   .mosaic.reveal .mosaic-tile:nth-child(3) { transition-delay: 0.31s; }
-  .mosaic.reveal .mosaic-seam { transition-delay: 0.4s; }
   @media (max-width: 720px) {
-    .mosaic { grid-template-columns: 1fr; height: auto; gap: 10px; background: transparent; border: none; }
-    .mosaic-tile { aspect-ratio: 3 / 4; height: auto; border: 1px solid var(--line); }
-    .mosaic-seam { display: none; }
+    .mosaic { flex-direction: column; height: auto; gap: 10px; }
+    .mosaic-tile { flex: 0 0 auto; aspect-ratio: 3 / 4; height: auto; margin-left: 0 !important; box-shadow: none; border: 1px solid var(--line); }
+    .mosaic-tile:hover { transform: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .mosaic.reveal .mosaic-tile, .mosaic.reveal .mosaic-seam { opacity: 1; transform: none; transition: none; }
+    .mosaic.reveal .mosaic-tile { opacity: 1; transform: none; transition: none; }
   }
 
   /* ---------- video band ---------- */
@@ -524,6 +512,7 @@
     width: 100%; height: 100%;
     object-fit: cover;
     filter: grayscale(1) contrast(1.15) brightness(0.75);
+    pointer-events: none;
   }
   .video-band::after {
     content: '';
@@ -840,26 +829,24 @@
 
       <p style="font-size: var(--step-small); color: var(--fg-faint); font-style: italic; margin-top: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0;">Три кита не только на словах — вот как они выглядят на практике, на реальных занятиях школы БАФ</p>
       <div class="mosaic reveal">
-        <a class="mosaic-tile" href="photos/balance-hug.jpg" target="_blank" rel="noopener">
+        <div class="mosaic-tile">
           <span class="mosaic-index">№ 01</span>
           <img src="photos/balance-hug.jpg" alt="Баланс — доверие между малинуа и кинологом БАФ" style="object-position: 50% 30%;">
           <span class="mosaic-scrim"></span>
           <span class="mosaic-cap"><em>Б</em>Баланс</span>
-        </a>
-        <a class="mosaic-tile" href="photos/adequacy-walk.jpg" target="_blank" rel="noopener">
+        </div>
+        <div class="mosaic-tile">
           <span class="mosaic-index">№ 02</span>
           <img src="photos/adequacy-walk.jpg" alt="Адекватность — собака спокойно идёт рядом на поводке">
           <span class="mosaic-scrim"></span>
           <span class="mosaic-cap"><em>А</em>Адекватность</span>
-        </a>
-        <a class="mosaic-tile" href="photos/functionality-run.jpg" target="_blank" rel="noopener">
+        </div>
+        <div class="mosaic-tile">
           <span class="mosaic-index">№ 03</span>
           <img src="photos/functionality-run.jpg" alt="Функциональность — отработка команды в движении с игрушкой" style="object-position: 50% 42%;">
           <span class="mosaic-scrim"></span>
           <span class="mosaic-cap"><em>Ф</em>Функциональность</span>
-        </a>
-        <span class="mosaic-seam s1" aria-hidden="true">+</span>
-        <span class="mosaic-seam s2" aria-hidden="true">+</span>
+        </div>
       </div>
     </div>
   </section>
@@ -961,7 +948,7 @@
   </section>
 
   <div class="video-band">
-    <video autoplay muted loop playsinline preload="metadata" poster="photos/dog-5.jpg" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata" poster="photos/dog-5.jpg" aria-hidden="true" disablepictureinpicture disableremoteplayback controlsList="nofullscreen nodownload noremoteplayback noplaybackrate">
       <source src="video/dogs-running.mp4" type="video/mp4">
     </video>
     <span class="video-caption">БАФ · в движении</span>
