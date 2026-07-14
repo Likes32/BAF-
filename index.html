@@ -1252,6 +1252,7 @@
 
       var dragStartX = 0, dragStartScroll = 0, isDown = false;
       reviewsSlider.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'touch') return;
         isDown = true;
         reviewsSlider.classList.add('is-dragging');
         dragStartX = e.clientX;
@@ -1261,10 +1262,12 @@
         if (!isDown) return;
         reviewsSlider.scrollLeft = dragStartScroll - (e.clientX - dragStartX);
       });
-      window.addEventListener('pointerup', function () {
+      function reviewsStopDrag() {
         isDown = false;
         reviewsSlider.classList.remove('is-dragging');
-      });
+      }
+      window.addEventListener('pointerup', reviewsStopDrag);
+      window.addEventListener('pointercancel', reviewsStopDrag);
 
       function reviewsAutoStep() {
         if (reviewsPaused || reduce) return;
