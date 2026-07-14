@@ -1274,6 +1274,9 @@
 
       reviewsSlider.addEventListener('wheel', function (e) {
         if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+          if (reviewsLoopWidth && reviewsSlider.scrollLeft >= reviewsLoopWidth - 2) {
+            reviewsSlider.scrollLeft -= reviewsLoopWidth;
+          }
           reviewsSlider.scrollLeft += e.deltaY;
           e.preventDefault();
         }
@@ -1281,6 +1284,9 @@
 
       function reviewsAutoStep() {
         if (reviewsPaused || reduce) return;
+        if (reviewsLoopWidth && reviewsSlider.scrollLeft >= reviewsLoopWidth - 2) {
+          reviewsSlider.scrollLeft -= reviewsLoopWidth;
+        }
         var card = reviewsTrack.querySelector('.review-card');
         var step = card ? card.getBoundingClientRect().width + 1 : 320;
         reviewsSlider.scrollBy({ left: step, behavior: 'smooth' });
