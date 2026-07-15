@@ -708,6 +708,61 @@
   .person p.bio { font-size: var(--step-small); color: var(--fg-soft); line-height: 1.55; }
   @media (max-width: 640px) { .people-grid { grid-template-columns: 1fr; } }
 
+  /* founders video intro (reel) */
+  .team-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    margin-bottom: clamp(2.2rem, 5vw, 3.5rem);
+  }
+  .team-reel {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 9 / 16;
+    background: #000;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 24px 50px -24px rgba(0,0,0,0.85);
+  }
+  .team-reel::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--red); z-index: 3; pointer-events: none;
+  }
+  .team-reel__video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .team-reel__play {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    border: none; cursor: pointer; color: #fff;
+    background: linear-gradient(180deg, rgba(8,7,7,0.12), rgba(8,7,7,0.5));
+    transition: opacity 0.35s ease;
+  }
+  .team-reel__play span {
+    display: flex; align-items: center; justify-content: center;
+    width: 62px; height: 62px; border-radius: 50%;
+    background: var(--red); box-shadow: 0 8px 26px rgba(200,38,44,0.55);
+    transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), background 0.2s ease;
+  }
+  .team-reel__play svg { width: 26px; height: 26px; margin-left: 3px; }
+  .team-reel__play:hover span { transform: scale(1.08); background: var(--red-bright); }
+  .team-reel__play:active span { transform: scale(0.96); }
+  .team-reel.is-playing .team-reel__play { opacity: 0; pointer-events: none; }
+  .team-intro__text h3 { font-size: var(--step-h3); margin: 0 0 0.8rem; }
+  .team-intro__text p { color: var(--fg-soft); font-size: var(--step-small); line-height: 1.6; margin: 0 0 1.2rem; max-width: 46ch; }
+  .team-reel-note {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: var(--step-caption); color: var(--fg-faint);
+    text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-display);
+  }
+  .team-reel-note svg { width: 15px; height: 15px; color: var(--red); }
+  @media (max-width: 760px) {
+    .team-intro { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .team-intro__text p { margin-inline: auto; }
+    .team-reel-note { justify-content: center; }
+  }
+
   /* ---------- reviews ---------- */
   .reviews-grid {
     display: grid;
@@ -996,6 +1051,24 @@
       <div class="section-head reveal">
         <p class="eyebrow">Кинологи</p>
         <h2>Основатели школы</h2>
+      </div>
+      <div class="team-intro reveal">
+        <div class="team-reel" data-reel>
+          <video class="team-reel__video" playsinline preload="none" poster="photos/founders-poster.jpg" data-reel-video>
+            <source src="video/founders-intro.mp4" type="video/mp4">
+          </video>
+          <button class="team-reel__play" type="button" aria-label="Смотреть видео о школе" data-reel-play>
+            <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+        </div>
+        <div class="team-intro__text">
+          <h3>Знакомьтесь — Дарина и Анна</h3>
+          <p>Основательницы школы сами рассказывают о себе, о том, как пришли в профессию и как подходят к работе с собаками — коротко и без прикрас.</p>
+          <span class="team-reel-note">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Видео · 49 секунд · со звуком
+          </span>
+        </div>
       </div>
       <div class="people-grid reveal">
         <div class="person">
@@ -1339,6 +1412,21 @@
       });
     } else {
       document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    }
+
+    var reel = document.querySelector('[data-reel]');
+    if (reel) {
+      var reelVideo = reel.querySelector('[data-reel-video]');
+      var reelPlay = reel.querySelector('[data-reel-play]');
+      reelPlay.addEventListener('click', function () {
+        reelVideo.controls = true;
+        reel.classList.add('is-playing');
+        reelVideo.play().catch(function () {});
+      });
+      reelVideo.addEventListener('ended', function () {
+        reelVideo.controls = false;
+        reel.classList.remove('is-playing');
+      });
     }
 
     var actionbar = document.querySelector('.mobile-actionbar');
