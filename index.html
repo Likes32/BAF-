@@ -279,25 +279,60 @@
   .nav-cta { display: flex; align-items: center; gap: 1rem; }
   .nav-toggle {
     display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
     background: none;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 0.5em 0.7em;
     cursor: pointer;
     color: var(--fg);
+    transition: border-color 0.2s ease, background 0.2s ease;
   }
+  .nav-toggle:hover { border-color: var(--red); }
   .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after {
     content: "";
     display: block;
-    width: 18px;
+    width: 20px;
     height: 1.5px;
     background: currentColor;
     position: relative;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
   }
-  .nav-toggle span::before { position: absolute; top: -6px; width: 18px; }
-  .nav-toggle span::after { position: absolute; top: 6px; width: 18px; }
+  .nav-toggle span::before { position: absolute; top: -7px; width: 20px; }
+  .nav-toggle span::after { position: absolute; top: 7px; width: 20px; }
+  .nav-toggle[aria-expanded="true"] span { background: transparent; }
+  .nav-toggle[aria-expanded="true"] span::before { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span::after { transform: translateY(-7px) rotate(-45deg); }
   @media (max-width: 900px) {
-    .nav-links { display: none; }
+    .nav-links {
+      display: flex;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid transparent;
+      gap: 1rem;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), padding 0.4s ease, border-color 0.4s ease;
+    }
+    .nav-links.is-open {
+      max-height: 26rem;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      padding: 1rem 1.25rem 1.5rem;
+      border-bottom-color: var(--line);
+    }
     .nav-toggle { display: inline-flex; }
   }
 
@@ -1113,24 +1148,22 @@
     var links = document.querySelector('.nav-links');
     if (toggle && links) {
       var openNav = function () {
-        links.style.display = 'flex';
-        links.style.cssText += 'position:absolute;top:100%;left:0;right:0;background:var(--bg);flex-direction:column;align-items:flex-start;padding:1rem 1.25rem 1.5rem;border-bottom:1px solid var(--line);gap:1rem;';
+        links.classList.add('is-open');
         toggle.setAttribute('aria-expanded', 'true');
       };
       var closeNav = function () {
-        links.removeAttribute('style');
+        links.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
       };
       toggle.addEventListener('click', function (e) {
         e.stopPropagation();
-        var isOpen = links.style.display === 'flex';
-        isOpen ? closeNav() : openNav();
+        links.classList.contains('is-open') ? closeNav() : openNav();
       });
       links.querySelectorAll('a').forEach(function (a) {
         a.addEventListener('click', closeNav);
       });
       document.addEventListener('click', function (e) {
-        if (links.style.display === 'flex' && !links.contains(e.target) && e.target !== toggle) {
+        if (links.classList.contains('is-open') && !links.contains(e.target) && e.target !== toggle) {
           closeNav();
         }
       });
