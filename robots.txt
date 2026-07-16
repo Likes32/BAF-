@@ -1,0 +1,11 @@
+# robots.txt — школа дрессировки собак «БАФ»
+# ВНИМАНИЕ: после подключения своего домена замените адрес в строке Sitemap ниже на ваш домен.
+
+User-agent: *
+Allow: /
+
+# Яндекс — основной поисковик в РФ
+User-agent: Yandex
+Allow: /
+
+Sitemap: https://likes32.github.io/BAF-/sitemap.xml
